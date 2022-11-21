@@ -43,18 +43,18 @@ public class UsuarioController {
     }
 
     @PostMapping("/{id}/etiquetas")
-    public UsuarioEtiquetasProjection adicionarInteresses(@PathVariable Long id, @RequestBody List<Etiqueta> etiquetas){
+    public ResponseEntity<UsuarioEtiquetasProjection> adicionarInteresses(@PathVariable Long id, @RequestBody List<Etiqueta> etiquetas){
         Usuario encontrado = service.encontrarUsuario(id);
-        return service.adicionarEtiquetas(encontrado, etiquetas);
+        return ResponseEntity.ok(service.adicionarEtiquetas(encontrado, etiquetas));
     }
 
     @GetMapping("/{id}/noticias/")
-    public NoticiasResponse retornaNoticias(@PathVariable Long id, @RequestParam("q") String etiquetaNome,@RequestParam("date") String data){
+    public ResponseEntity<NoticiasResponse> retornaNoticias(@PathVariable Long id, @RequestParam("q") String etiquetaNome,@RequestParam("date") String data){
         Usuario encontrado = service.encontrarUsuario(id);
         //Etiqueta etiqueta = etiquetaService.encontrarEtiqueta(etiquetaNome);  
         service.acessarEtiqueta(encontrado, etiquetaNome); 
         NoticiasResponse noticias = noticiasService.obterNoticias(etiquetaNome, data);
-        return noticias;     
+        return ResponseEntity.ok(noticias);     
     }
 
     

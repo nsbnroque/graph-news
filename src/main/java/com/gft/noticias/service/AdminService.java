@@ -35,4 +35,7 @@ public class AdminService {
     void enviarEmail(){
 
     }
+
+    public void excluirAdmin(Long id) {
+    }
 }

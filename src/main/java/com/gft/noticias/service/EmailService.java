@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.gft.noticias.client.Noticias;
@@ -18,6 +20,20 @@ import lombok.RequiredArgsConstructor;
 public class EmailService {
     private final UsuarioService usuarioService;
     private final NoticiasService noticiasService;
+
+    private final JavaMailSender mailSender;
+
+    public void enviarEmail(String toEmail, String body, String subject){
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("gft-noticias@outlook.com");
+        message.setTo(toEmail);
+        message.setText(body);
+        message.setSubject(subject);
+        mailSender.send(message);
+        System.out.println("Email enviado.");
+    }
 
     public List<Noticias> gerarEmail(Usuario usuario){
         return null;

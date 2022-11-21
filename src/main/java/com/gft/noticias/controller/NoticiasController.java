@@ -18,9 +18,7 @@ public class NoticiasController {
     private final NoticiasService noticiasService;
 
     @GetMapping
-    public NoticiasResponse buscarNoticias(@RequestParam String q, @RequestParam String date){
-        
-        
+    public NoticiasResponse buscarNoticias(@RequestParam String q, @RequestParam String date){   
         return noticiasService.obterNoticias(q, date);
     }
     

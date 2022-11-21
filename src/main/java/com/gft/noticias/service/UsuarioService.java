@@ -79,15 +79,15 @@ public class UsuarioService {
     }
 
     public List<Etiqueta> listarEtiquetas(Usuario usuario) {
-        return repository.findFavorites();
+        return repository.findFavorites(usuario);
     }
 
     public List<Etiqueta> listarRecomendacoes(Usuario usuario) {
-        return repository.findRecommendations();
+        return repository.findRecommendations(usuario);
     }
 
     public List<Etiqueta> listarTrends(Usuario usuario) {
-        return repository.findTrends();
+        return repository.findTrends(usuario);
     }
     
 

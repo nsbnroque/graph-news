@@ -1,10 +1,13 @@
 package com.gft.noticias.repository;
 
+import java.util.List;
+
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 import com.gft.noticias.projections.UsuarioEtiquetasProjection;
 
@@ -20,6 +23,15 @@ public interface UsuarioRepository extends Neo4jRepository<Usuario,Long> {
     Usuario findUsuarioByEmail(String email);
 
     UsuarioEtiquetasProjection findByUsuarioId(@Param("id") Long id);
+
+    @Query("MATCH (u:Usuario{$usuario} -[r:TEM_INTERESSE_EM]->(e) RETURN e")
+    List<Etiqueta> findFavorites(@Param("usuario")Usuario usuario);
+
+    @Query("MATCH (u:Usuario{$usuario} -[r:TEM_INTERESSE_EM*2]->(e) RETURN e")
+    List<Etiqueta> findRecommendations(@Param("usuario")Usuario usuario);
+
+    @Query("MATCH (u)-[r:ACESSOU]->(e) RETURN e WHERE NOT EXISTS (u)-[:TEM_INTERESSE_EM]-(e) RETURN e")
+    List<Etiqueta> findTrends(Usuario usuario);
 
     
 }
