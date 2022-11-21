@@ -1,0 +1,2 @@
+CREATE CONSTRAINT constraint_email IF NOT EXISTS FOR (usuario:Usuario) REQUIRE usuario.email IS UNIQUE
+CREATE CONSTRAINT constraint_nome IF NOT EXISTS FOR (etiqueta:Etiqueta) REQUIRE etiqueta.nome IS UNIQUE

@@ -11,10 +11,10 @@ import com.gft.noticias.projections.MaisAcessadasView;
 @Repository
 public interface AcessosRepository extends Neo4jRepository<Acessos,Long> {
 
-    @Query("MATCH (e:Etiqueta {nome:$nome}) MATCH ()-[r:ACESSOU]-(e) UNWIND r.acessos AS val RETURN e.nome, count(val)")
+    @Query("MATCH (e:Etiqueta {nome:$nome}) MATCH ()-[r:ACESSOU]-(e) UNWIND r.acessos AS val RETURN e{.nome}, count(val)")
     MaisAcessadasView countAcessos(@Param("nome") String nome);
 
-    @Query("MATCH (e:Etiqueta {nome:$nome}) MATCH ()-[r:TEM_INTERESSE_EM]-(e) UNWIND r.acessos AS val RETURN e.nome, count(val)")
+    @Query("MATCH (e:Etiqueta {nome:$nome}) MATCH ()-[r:TEM_INTERESSE_EM]-(e) UNWIND r.acessos AS val RETURN e{.nome}, count(val)")
     MaisAcessadasView countAcessosEtiquetas(@Param("nome") String nome);
     
 }

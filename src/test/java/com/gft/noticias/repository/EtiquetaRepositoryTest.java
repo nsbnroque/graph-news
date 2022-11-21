@@ -1,7 +1,6 @@
 package com.gft.noticias.repository;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
@@ -15,8 +14,6 @@ import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-
-import com.gft.noticias.entity.Etiqueta;
 
 @DataNeo4jTest
 class EtiquetaRepositoryTest {

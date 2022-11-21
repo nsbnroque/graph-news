@@ -77,6 +77,18 @@ public class UsuarioService {
         }
         return this.salvarUsuario(usuario);
     }
+
+    public List<Etiqueta> listarEtiquetas(Usuario usuario) {
+        return repository.findFavorites();
+    }
+
+    public List<Etiqueta> listarRecomendacoes(Usuario usuario) {
+        return repository.findRecommendations();
+    }
+
+    public List<Etiqueta> listarTrends(Usuario usuario) {
+        return repository.findTrends();
+    }
     
 
 }
