@@ -5,6 +5,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.gft.noticias.dto.ContagemAcessosDTO;
 import com.gft.noticias.entity.Acessos;
 import com.gft.noticias.projections.MaisAcessadasView;
 
@@ -12,7 +13,7 @@ import com.gft.noticias.projections.MaisAcessadasView;
 public interface AcessosRepository extends Neo4jRepository<Acessos,Long> {
 
     @Query("MATCH (e:Etiqueta {nome:$nome}) MATCH ()-[r:ACESSOU]-(e) UNWIND r.acessos AS val RETURN e{.nome}, count(val)")
-    MaisAcessadasView countAcessos(@Param("nome") String nome);
+    ContagemAcessosDTO countAcessos(@Param("nome") String nome);
 
     @Query("MATCH (e:Etiqueta {nome:$nome}) MATCH ()-[:TEM_INTERESSE_EM]-(e) MATCH ()-[r:ACESSOU]-(e) UNWIND r.acessos AS val RETURN e{.nome}, count(val)")
     MaisAcessadasView countAcessosEtiquetas(@Param("nome") String nome);

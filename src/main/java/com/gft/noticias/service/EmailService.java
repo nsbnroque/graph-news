@@ -23,7 +23,7 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    public void enviarEmail(String toEmail, String body, String subject){
+    public String enviarEmail(String toEmail, String body, String subject){
 
         SimpleMailMessage message = new SimpleMailMessage();
 
@@ -32,7 +32,7 @@ public class EmailService {
         message.setText(body);
         message.setSubject(subject);
         mailSender.send(message);
-        System.out.println("Email enviado.");
+        return "Email enviado com sucesso";
     }
 
     public List<Noticias> gerarEmail(Usuario usuario){

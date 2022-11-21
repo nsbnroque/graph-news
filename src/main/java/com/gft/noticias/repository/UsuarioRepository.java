@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
+import com.gft.noticias.projections.MaisAcessadasView;
 import com.gft.noticias.projections.UsuarioEtiquetasProjection;
 
 @Repository
@@ -32,6 +33,9 @@ public interface UsuarioRepository extends Neo4jRepository<Usuario,Long> {
 
     @Query("MATCH (u)-[r:ACESSOU]->(e) RETURN e WHERE NOT EXISTS (u)-[:TEM_INTERESSE_EM]-(e) RETURN e")
     List<Etiqueta> findTrends(Usuario usuario);
+
+    @Query("MATCH (e:Etiqueta)  MATCH (u:Usuario{$usuario})-[r:ACESSOU]-(e) UNWIND r.acessos AS val RETURN e{.nome}, count(val) AS contagem")
+    List<MaisAcessadasView> findMostAccessed(@Param("usuario")Usuario usuario);
 
     
 }

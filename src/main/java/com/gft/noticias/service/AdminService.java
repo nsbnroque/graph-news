@@ -24,7 +24,8 @@ public class AdminService {
 
     List<MaisAcessadasView> etiquetasTrends() {
         List<Etiqueta> todas = etiquetaService.listarTodas();
-        return acessosService.maioresAcessos(todas);
+        acessosService.maioresAcessos(todas);
+        return null;
     }
 
 

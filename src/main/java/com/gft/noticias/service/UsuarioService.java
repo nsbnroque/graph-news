@@ -1,6 +1,7 @@
 package com.gft.noticias.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 import com.gft.noticias.exception.DuplicatedUniquePropertyException;
 import com.gft.noticias.exception.EntityNotFoundException;
+import com.gft.noticias.projections.MaisAcessadasView;
 import com.gft.noticias.projections.UsuarioEtiquetasProjection;
 import com.gft.noticias.repository.UsuarioRepository;
 
@@ -88,6 +90,15 @@ public class UsuarioService {
 
     public List<Etiqueta> listarTrends(Usuario usuario) {
         return repository.findTrends(usuario);
+    }
+
+    public List<MaisAcessadasView> maioresAcessos(Usuario usuario){
+       // List<MaisAcessadasView> etiquetasHistorico = new ArrayList<>();
+        /*List<Etiqueta> etiquetas = repository.findEtiquetas
+        for (Etiqueta e: etiquetas){
+            etiquetasHistorico.add(repository.findMostAccessed(usuario));
+        }*/
+        return repository.findMostAccessed(usuario);
     }
     
 
