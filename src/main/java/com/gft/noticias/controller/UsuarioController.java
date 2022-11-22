@@ -1,5 +1,6 @@
 package com.gft.noticias.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,11 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}/noticias/")
-    public ResponseEntity<NoticiasResponse> retornaNoticias(@PathVariable Long id, @RequestParam("q") String etiquetaNome,@RequestParam("date") String data){
+    public ResponseEntity<NoticiasResponse> retornaNoticias(@PathVariable Long id, @RequestParam("q") String etiquetaNome,@RequestParam(name="date", required = false) String data){
+        if (data == null) {
+            data = LocalDate.now().toString();        
+        }
+        
         Usuario encontrado = service.encontrarUsuario(id);
         //Etiqueta etiqueta = etiquetaService.encontrarEtiqueta(etiquetaNome);  
         service.acessarEtiqueta(encontrado, etiquetaNome); 

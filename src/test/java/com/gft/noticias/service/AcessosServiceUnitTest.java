@@ -1,8 +1,9 @@
 package com.gft.noticias.service;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,29 +21,40 @@ public class AcessosServiceUnitTest {
     @Autowired 
     UsuarioService usuarioService;
 
-    private Usuario usuario;
-    private Etiqueta etiqueta;
+    private Usuario usuario = Usuario.builder().email("user@gft.com").nome("Usuario Sistema").build();
+    private Etiqueta etiqueta = Etiqueta.builder().nome("teste").build();
+    private Etiqueta etiqueta2 = Etiqueta.builder().nome("outra").build();
 
-    @BeforeAll
-    private void setup(){
-        usuario = Usuario.builder().email("user@gft.com").nome("Usuario Sistema").build();
-        etiqueta = Etiqueta.builder().nome("teste").build();
-
-    }
+    @BeforeEach
+    void setup(){
+    usuarioService.salvarUsuario(usuario);
+    usuarioService.acessarEtiqueta(usuario, etiqueta.getNome());
+    usuarioService.acessarEtiqueta(usuario, etiqueta2.getNome());
+        }
     
+    @AfterEach
+    void end(){
+        Long id = usuarioService.encontrarUsuarioPorEmail("user@gft.com").getUsuarioId();
+        usuarioService.excluirUsuario(id);
+    }
+
     @Test
     void quandoChamarContarAcessos_EntaoRetornaNomeEQuantidadeDeAcessos(){
-        Etiqueta etiqueta = Etiqueta.builder().nome("tecnologia").build();
-        Collection<ContagemAcessosDTO> acessos = acessosService.contarAcessos(etiqueta);
-        System.out.println(acessos);
+        Etiqueta etiqueta = Etiqueta.builder().nome("teste").build();
+        //Collection<ContagemAcessosDTO> acessos = acessosService.contarAcessos(etiqueta);
+       // System.out.println("-----------------------------------------------------------------------------" + acessos);
+        System.out.println("-----------------------------------------------------------------------------" 
+                            + acessosService.contarAcessos(etiqueta));
     }
     
     @Test
     void quandoChamarHistoricoDeAcessos_EntaoRetornaHistorico() {
-        Usuario retornado = usuarioService.encontrarUsuarioPorEmail("gasa@gft.com");
+        Usuario retornado = usuarioService.encontrarUsuarioPorEmail("user@gft.com");
         System.out.println(retornado.toString());
-        //Collection<ContagemAcessosDTO> historico = acessosService.historicoAcessosUsuario(retornado);
-        //System.out.println(historico);
+        List<ContagemAcessosDTO> historico = acessosService.historicoAcessos(retornado);
+        System.out.println("--------------------------------------------------\n"
+                            + historico.toString()
+                            + "\n--------------------------------------------------\n");
         
     }
 

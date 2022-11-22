@@ -1,6 +1,8 @@
 package com.gft.noticias.service;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ public class AcessosService {
 
     private final Neo4jClient neo4jClient;
 
-    public Collection<ContagemAcessosDTO> contarAcessos(Etiqueta etiqueta) {
+    public Collection<ContagemAcessosDTO> fetchAcessos(Etiqueta etiqueta) {
         return this.neo4jClient
                 .query(""
                        + "MATCH (etiqueta:Etiqueta {nome : $nome}) "
@@ -28,11 +30,15 @@ public class AcessosService {
                 .bind(etiqueta.getNome()).to("nome") 
                 .fetchAs(ContagemAcessosDTO.class) 
                 .mappedBy((typeSystem, record) -> new ContagemAcessosDTO(record.get("n").asString(),
-                        record.get("contagem").asInt())) 
+                        record.get("contagem").asInt()))
                 .all(); 
     }
 
-    public Collection<ContagemAcessosDTO> historicoAcessosUsuario(Usuario usuario) {
+    public List<ContagemAcessosDTO> contarAcessos(Etiqueta etiqueta){
+        return this.fetchAcessos(etiqueta).stream().collect(Collectors.toList());
+    }
+
+    public Collection<ContagemAcessosDTO> fetchHistorico(Usuario usuario) {
         return this.neo4jClient
                 .query(""
                        + "MATCH (usuario:Usuario {email : $email})"
@@ -46,30 +52,9 @@ public class AcessosService {
                         record.get("contagem").asInt())) 
                 .all(); 
     }
-    /* 
-    private final AcessosRepository repository;
 
-
-
-    public Page<Etiqueta> maioresAcessos(List<Etiqueta> etiquetas){
-        List<MaisAcessadasView> etiquetasHistorico = new ArrayList<>();
-        for (Etiqueta e: etiquetas){
-            etiquetasHistorico.add(repository.countAcessos(e.getNome()));
-        }
-        return null;//etiquetasHistorico;
+    public List<ContagemAcessosDTO> historicoAcessos(Usuario usuario){
+        return this.fetchHistorico(usuario).stream().collect(Collectors.toList());
     }
-
-    public List<MaisAcessadasView> etiquetasMaioresAcessos(List<Etiqueta> etiquetas){
-        List<MaisAcessadasView> etiquetasHistorico = new ArrayList<>();
-        for (Etiqueta e: etiquetas){
-            etiquetasHistorico.add(repository.countAcessosEtiquetas(e.getNome()));
-        }
-        return etiquetasHistorico;
-    }
-
-    public ContagemAcessosDTO contagemAcessos(Etiqueta etiqueta){
-        return repository.countAcessos(etiqueta.getNome());
-    }
-*/
     
 }
