@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -19,6 +21,7 @@ import com.gft.noticias.projections.UsuarioEtiquetasProjection;
 import com.gft.noticias.repository.AcessosRepository;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UsuarioServiceUnitTest {
 
     @Autowired
@@ -40,6 +43,7 @@ public class UsuarioServiceUnitTest {
 
 
     @Test
+    @Order(1)
     void quandoEncontrarUsuarioPeloId_EntaoRetornaUsuario(){
         Usuario salvo = this.service.salvarUsuario(usuario);
         Usuario retornado = this.service.encontrarUsuario(salvo.getUsuarioId());
@@ -47,12 +51,14 @@ public class UsuarioServiceUnitTest {
     }
 
     @Test
+    @Order(2)
     void quandoEncontrarUsuarioPeloEmail_EntaoRetornaUsuario(){
         Usuario retornado = this.service.encontrarUsuarioPorEmail(usuario.getEmail());
         assertEquals(retornado.getEmail(),usuario.getEmail());
     }
 
     @Test
+    @Order(3)
     void quandoAdicionarEtiqueta_EntaoRetornaUsuarioEtiquetas(){
         Etiqueta etiqueta = Etiqueta.builder()
                                     .nome("tecnologia")
@@ -64,6 +70,7 @@ public class UsuarioServiceUnitTest {
     }
 
     @Test
+    @Order(4)
     void quandoAcessarParametro_EntaoDeveCriarAcesso(){
         Usuario retornado = this.service.encontrarUsuarioPorEmail(usuario.getEmail());
         service.acessarEtiqueta(retornado, "tecnologia");
@@ -71,12 +78,14 @@ public class UsuarioServiceUnitTest {
     }
 
     @Test 
+    @Order(5)
     void quandoAcessarParametro_EntaoParametroDeveSerCriado(){
         Usuario retornado = this.service.encontrarUsuarioPorEmail(usuario.getEmail());
         service.acessarEtiqueta(retornado, "futebol");
         assertTrue(retornado.getParametros() != null);
     }
     @Test
+    @Order(6)
     void quandoAcessarParametro_EntaoDeveAumentarQuantidadeDeAcessos(){
         int num_anterior = acessosRepository.countAcessos("tecnologia").getCount();
         Usuario retornado = this.service.encontrarUsuarioPorEmail(usuario.getEmail());
@@ -87,6 +96,7 @@ public class UsuarioServiceUnitTest {
     }
 
     @Test
+    @Order(7)
     void quandoEditarUsuario_EntaoRetornaUsuarioEditado(){
         Usuario encontrado = service.encontrarUsuarioPorEmail("gasa@gft.com");
         encontrado.setNome("Gael Santos");
@@ -95,6 +105,7 @@ public class UsuarioServiceUnitTest {
     }
 
     @Test
+    @Order(8)
     void quandoSalvarUsuarioComEmailExistente_EntaoLancaExcecao(){
         Usuario novo = Usuario.builder()
                               .email("gasa@gft.com")
@@ -103,6 +114,7 @@ public class UsuarioServiceUnitTest {
     }
 
     @Test
+    @Order(9)
     void quandoSalvarUsuarioComEmailExistente_EntaoLancaMensagem(){
         Usuario novo = Usuario.builder()
                               .email("gasa@gft.com")
@@ -114,6 +126,7 @@ public class UsuarioServiceUnitTest {
     }
 
     @Test
+    @Order(10)
     void quandoExcluirUsuario_EntaoUsuarioDeveSerExcluido(){
         Long id = this.service.encontrarUsuarioPorEmail(usuario.getEmail()).getUsuarioId();
         service.excluirUsuario(id);

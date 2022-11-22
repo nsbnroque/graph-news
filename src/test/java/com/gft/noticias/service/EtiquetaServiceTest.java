@@ -50,7 +50,7 @@ public class EtiquetaServiceTest {
     void quandoEncontrarEtiquetaPeloNome_EntaoRetornaEtiqueta(){
        //when(repository.findOneByNome(nome)).thenReturn(null);
         String nome = "Nova Etiqueta";
-        Etiqueta encontrada = service.encontrarEtiqueta(nome);
+        Etiqueta encontrada = service.encontrarEtiqueta(nome).get();
         assertEquals(nome, encontrada.getNome());
     }
 
