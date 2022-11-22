@@ -1,11 +1,12 @@
 package com.gft.noticias.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.gft.noticias.entity.Admin;
-import com.gft.noticias.projections.MaisAcessadasView;
+import com.gft.noticias.exception.EntityNotFoundException;
 import com.gft.noticias.repository.AdminRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -14,28 +15,31 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminService {
     private final AdminRepository repository;
-    //private final EtiquetaService etiquetaService;
-   // private final AcessosService acessosService;
+
 
     public Admin salvarAdmin(Admin admin){
         return repository.save(admin);
     }
 
-    List<MaisAcessadasView> etiquetasTrends() {
-       // List<Etiqueta> todas = etiquetaService.listarTodas();
-        //acessosService.maioresAcessos(todas);
-        return null;
+    public List<Admin> listar(){
+        return repository.findAll();
     }
 
-
-    void etiquetasMaisAcessadas(){
-
+    public Admin findByEmail(String email){
+        return repository.findByEmail(email);
     }
 
-    void enviarEmail(){
-
+    public Admin editar(Long id, Admin admin){
+        Optional<Admin> encontrado = repository.findById(id);
+        if (encontrado.isEmpty()){ 
+            throw new EntityNotFoundException("Admin não encontrado com o id: " + id);}
+            Admin retornado = encontrado.get();
+            retornado.setEmail(admin.getEmail());
+            retornado.setSenha(admin.getSenha());
+        return repository.save(retornado);
     }
 
     public void excluirAdmin(Long id) {
+        repository.deleteById(id);
     }
 }

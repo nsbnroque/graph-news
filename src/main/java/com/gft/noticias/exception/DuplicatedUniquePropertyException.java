@@ -1,8 +1,6 @@
 package com.gft.noticias.exception;
 
-import org.springframework.dao.DataIntegrityViolationException;
-
-public class DuplicatedUniquePropertyException extends DataIntegrityViolationException {
+public class DuplicatedUniquePropertyException extends RuntimeException {
     public DuplicatedUniquePropertyException(String s)
     {
         super(s);
