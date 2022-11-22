@@ -1,6 +1,7 @@
 package com.gft.noticias.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -21,7 +22,7 @@ public interface UsuarioRepository extends Neo4jRepository<Usuario,Long> {
     @Query("MATCH (u: Usuario {email: $email}) MATCH (e:Etiqueta {nome: $etiqueta}) MERGE (u)-[r:TEM_INTERESSE_EM]-(e) RETURN u")
     Usuario matchRelationship(@Param("email")String email,@Param("etiqueta") String etiqueta);
 
-    Usuario findUsuarioByEmail(String email);
+    Optional<Usuario> findUsuarioByEmail(String email);
 
     UsuarioEtiquetasProjection findByUsuarioId(@Param("id") Long id);
 

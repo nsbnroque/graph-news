@@ -3,6 +3,7 @@ package com.gft.noticias.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gft.noticias.entity.Admin;
@@ -15,9 +16,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminService {
     private final AdminRepository repository;
+    private final PasswordEncoder encoder;
 
     public Admin salvarAdmin(Admin admin){
         admin.setRole("ROLE_ADMIN");
+        admin.setSenha(encoder.encode(admin.getSenha()));
         return repository.save(admin);
     }
 
@@ -44,7 +47,7 @@ public class AdminService {
         if (encontrado.isEmpty()){ 
             throw new EntityNotFoundException("Admin não encontrado com o id: " + id);}
         Admin retornado = encontrado.get();
-            retornado.setSenha(novaSenha);
+            retornado.setSenha(encoder.encode(novaSenha));
         return repository.save(retornado); 
     }
 
