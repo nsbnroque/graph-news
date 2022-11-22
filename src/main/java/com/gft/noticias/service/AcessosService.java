@@ -8,6 +8,7 @@ import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 
 import com.gft.noticias.dto.ContagemAcessosDTO;
+import com.gft.noticias.dto.EtiquetaDTO;
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 
@@ -56,5 +57,23 @@ public class AcessosService {
     public List<ContagemAcessosDTO> historicoAcessos(Usuario usuario){
         return this.fetchHistorico(usuario).stream().collect(Collectors.toList());
     }
+
+    public Collection<EtiquetaDTO> fetchRecommendations(Usuario usuario){
+        return this.neo4jClient
+               .query("").bind(usuario.getEmail()).to("email")
+               .fetchAs(EtiquetaDTO.class)
+               .mappedBy((typeSystem,record) -> new EtiquetaDTO(record.get("nome").asString()))
+               .all();
+    }
+
+    public Collection<EtiquetaDTO> fetchTrends(String data){
+        return this.neo4jClient
+               .query("").bind(data).to("data")
+               .fetchAs(EtiquetaDTO.class)
+               .mappedBy((typeSystem,record) -> new EtiquetaDTO(record.get("nome").asString()))
+               .all();
+    }
+
+    
     
 }
