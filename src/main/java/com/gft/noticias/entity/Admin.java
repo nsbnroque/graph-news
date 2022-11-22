@@ -18,7 +18,11 @@ public class Admin {
     @Id
     @GeneratedValue
     private Long adminId;
+    
+    private String nome;
     private String email;
     private String senha;
+    private String role;
+
     
 }

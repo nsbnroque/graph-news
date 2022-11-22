@@ -16,8 +16,8 @@ import lombok.RequiredArgsConstructor;
 public class AdminService {
     private final AdminRepository repository;
 
-
     public Admin salvarAdmin(Admin admin){
+        admin.setRole("ROLE_ADMIN");
         return repository.save(admin);
     }
 
@@ -37,6 +37,15 @@ public class AdminService {
             retornado.setEmail(admin.getEmail());
             retornado.setSenha(admin.getSenha());
         return repository.save(retornado);
+    }
+
+    public Admin trocarSenha(Long id, String novaSenha){
+        Optional<Admin> encontrado = repository.findById(id);
+        if (encontrado.isEmpty()){ 
+            throw new EntityNotFoundException("Admin não encontrado com o id: " + id);}
+        Admin retornado = encontrado.get();
+            retornado.setSenha(novaSenha);
+        return repository.save(retornado); 
     }
 
     public void excluirAdmin(Long id) {
