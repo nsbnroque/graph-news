@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +26,14 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioService {
     private final UsuarioRepository repository;
     private final EtiquetaService etiquetaService;
+    private final PasswordEncoder encoder;
 
     @Transactional
     public Usuario salvarUsuario(Usuario usuario){
         if(repository.findUsuarioByEmail(usuario.getEmail()) != null) {
             throw new DuplicatedUniquePropertyException("Email já cadastrado: " + usuario.getEmail());
         }
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
         return repository.save(usuario);
     }
 
@@ -69,7 +73,9 @@ public class UsuarioService {
     }
 
     public Usuario encontrarUsuarioPorEmail(String email) {
-        return repository.findUsuarioByEmail(email);
+        Optional<Usuario> encontrado = repository.findUsuarioByEmail(email);
+        if(encontrado.isEmpty()) {throw new UsernameNotFoundException(email);}
+        return encontrado.get();
     }
 
     public Usuario editarUsuario(Usuario usuario) {
