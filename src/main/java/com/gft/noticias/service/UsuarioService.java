@@ -30,10 +30,11 @@ public class UsuarioService {
 
     @Transactional
     public Usuario salvarUsuario(Usuario usuario){
-        if(repository.findUsuarioByEmail(usuario.getEmail()) != null) {
+        if(!repository.findUsuarioByEmail(usuario.getEmail()).isEmpty()) {
             throw new DuplicatedUniquePropertyException("Email já cadastrado: " + usuario.getEmail());
         }
         usuario.setSenha(encoder.encode(usuario.getSenha()));
+        usuario.setRole("ROLE_USER");
         return repository.save(usuario);
     }
 

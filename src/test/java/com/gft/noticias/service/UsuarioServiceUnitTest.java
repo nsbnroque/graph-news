@@ -1,10 +1,12 @@
 package com.gft.noticias.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
@@ -31,13 +34,12 @@ public class UsuarioServiceUnitTest {
 
     private static Usuario usuario;
 
-
-
     @BeforeAll
     static void setup(){
         usuario = Usuario.builder()
                          .nome("Gael dos Santos")
                          .email("gasa@gft.com")
+                         .senha("senha123")
                          .build();                      
     }
 
@@ -84,15 +86,12 @@ public class UsuarioServiceUnitTest {
         service.acessarEtiqueta(retornado, "futebol");
         assertTrue(retornado.getParametros() != null);
     }
+
     @Test
     @Order(6)
-    void quandoAcessarParametro_EntaoDeveAumentarQuantidadeDeAcessos(){
-        int num_anterior = acessosRepository.countAcessos("tecnologia").getCount();
+    void quandoSalvarUsuario_EntaoAdicionaPropriedadeRole(){
         Usuario retornado = this.service.encontrarUsuarioPorEmail(usuario.getEmail());
-        service.acessarEtiqueta(retornado, "tecnologia");
-        int num_posterior = acessosRepository.countAcessos("tecnologia").getCount();
-        assertTrue(num_anterior < num_posterior);
-        
+        assertEquals("ROLE_USER", retornado.getRole());      
     }
 
     @Test
@@ -127,9 +126,21 @@ public class UsuarioServiceUnitTest {
 
     @Test
     @Order(10)
+    void quandoSalvarUsuario_EntaoSenhaDeveSerCriptografada(){
+        Usuario encontrado = service.encontrarUsuarioPorEmail("gasa@gft.com");
+        assertFalse(encontrado.getSenha() == "senha123");
+    }
+
+    @Order(11)
+    void quandoAcessarParametro_EntaoDeveAumentarQuantidadeDeAcessos(){
+        
+    }
+
+    @Test
+    @Order(50)
     void quandoExcluirUsuario_EntaoUsuarioDeveSerExcluido(){
-        Long id = this.service.encontrarUsuarioPorEmail(usuario.getEmail()).getUsuarioId();
+        Long id = service.encontrarUsuarioPorEmail(usuario.getEmail()).getUsuarioId();
         service.excluirUsuario(id);
-        assertTrue(service.encontrarUsuarioPorEmail(usuario.getEmail()) == null);
+        assertThrows(UsernameNotFoundException.class, ()-> {service.encontrarUsuarioPorEmail(usuario.getEmail());});
     }
 }
