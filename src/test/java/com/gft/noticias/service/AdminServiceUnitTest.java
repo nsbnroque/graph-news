@@ -27,7 +27,10 @@ public class AdminServiceUnitTest {
 
     @BeforeAll
     public static void setup(){
-        admin = Admin.builder().nome("Administrador").email("admin@email.com").build();
+        admin = Admin.builder().nome("Administrador")
+        .email("admin@email.com")
+        .senha("senha123")
+        .build();
     }
 
     @Test
@@ -46,6 +49,13 @@ public class AdminServiceUnitTest {
 
     @Test
     @Order(3)
+    void quandoSalvarSenha_EntaoSenhaDeveSerEncriptada(){
+        Admin retornado = adminService.findByEmail("admin@email.com");
+        assertFalse("senha123" == retornado.getSenha());
+    }
+
+    @Test
+    @Order(4)
     void quandoAcessarRole_EntaoRetornaAdmin() {
         Admin retornado = adminService.findByEmail("admin@email.com");
         assertEquals("ROLE_ADMIN", retornado.getRole());
@@ -61,6 +71,7 @@ public class AdminServiceUnitTest {
     }
 
     @Test
+    @Order(5)
     void quandoTrocarSenha_EntaoSomenteSenhaSeraAlterada() {
         Admin retornado = adminService.findByEmail("admin@email.com");
         Admin editado = adminService.trocarSenha(retornado.getAdminId(), "novaSenha");
@@ -71,8 +82,10 @@ public class AdminServiceUnitTest {
     }
 
     @Test
+    @Order(50)
     void testExcluirAdmin() {
-
+        Long id = adminService.findByEmail("admin@email.com").getAdminId();
+        adminService.excluirAdmin(id);
     }
 
 
