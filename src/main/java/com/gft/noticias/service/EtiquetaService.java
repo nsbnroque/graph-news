@@ -35,7 +35,6 @@ public class EtiquetaService {
 
     public Optional<Etiqueta> encontrarEtiqueta(String nome){
         Optional<Etiqueta> encontrada = repository.findOneByNomeIgnoreCase(nome);
-        //if(encontrada.isEmpty()){throw new EntityNotFoundException("Etiqueta não encontrada com o nome: " + nome);}
         return encontrada;
     }
 

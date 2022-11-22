@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -65,43 +67,22 @@ public class EtiquetaServiceUnitTest {
     }
 
     @Test
-    @Order(5)
-    void quandoEncontrarEtiquetaPeloNomeNaoExistente_EntaoLancaExcecao(){
-        String nome = "etiqueta que não existe";
-        assertThrows(EntityNotFoundException.class, ()-> {service.encontrarEtiqueta(nome);});
-    }
-
-    @Test
-    @Order(6)
-    void quandoEncontrarEtiquetaPeloNomeNaoExistente_EntaoLancaMensagem(){
-        String nome = "etiqueta que não existe";
-        String mensagem = "Etiqueta não encontrada com o nome: " +nome;
-        EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, 
-                                () -> { service.encontrarEtiqueta(nome);});
-                     
-        assertEquals(mensagem, thrown.getMessage());
-    }
-
-    @Test
-    @Order(7)
+    @Order(45)
     void quandoExcluirEtiquetaPeloNome_EntaoxcluiEtiqueta(){
         String nome="tudogrande";
         service.excluirEtiquetaPeloNome(nome);
-        assertThrows(EntityNotFoundException.class, ()-> {service.encontrarEtiqueta(nome);});
-
+        Optional<Etiqueta> encontrada = service.encontrarEtiqueta(nome);
+        assertTrue(encontrada.isEmpty());   
     }
 
     @Test
-    @Order(8)
+    @Order(50)
     void quandoExcluirEtiquetaPeloid_EntaoxcluiEtiqueta(){
         Long encontrado = this.service.encontrarEtiqueta("etiqueta").get().getEtiquetaId();
         service.excluirEtiqueta(encontrado);
         assertThrows(EntityNotFoundException.class, ()-> {service.encontrarEtiquetaPeloId(encontrado);});
         
     }
-
-
-
 
     
 }
