@@ -70,6 +70,12 @@ public class UsuarioServiceUnitTest {
         assertTrue(retornado.getParametros() != null);
     }
 
+    @Test 
+    void quandoAcessarParametro_EntaoParametroDeveSerCriado(){
+        Usuario retornado = this.service.encontrarUsuarioPorEmail(usuario.getEmail());
+        service.acessarEtiqueta(retornado, "futebol");
+        assertTrue(retornado.getParametros() != null);
+    }
     @Test
     void quandoAcessarParametro_EntaoDeveAumentarQuantidadeDeAcessos(){
         int num_anterior = acessosRepository.countAcessos("tecnologia").getCount();

@@ -1,7 +1,6 @@
 package com.gft.noticias.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,13 +58,13 @@ public class UsuarioService {
 
     
     public void acessarEtiqueta(Usuario usuario, String etiquetaNome){
-        if(etiquetaService.encontrarEtiqueta(etiquetaNome) == null){
-            Etiqueta nova = Etiqueta.builder().nome(etiquetaNome).build();
-            etiquetaService.salvarEtiqueta(nova);
-        }
         LocalDate data = LocalDate.now();
         String now
-            = data.toString();           
+            = data.toString();    
+        if(etiquetaService.encontrarEtiqueta(etiquetaNome).isEmpty()){
+            Etiqueta nova = Etiqueta.builder().nome(etiquetaNome).build();
+            etiquetaService.salvarEtiqueta(nova);
+        }     
         repository.accessEtiqueta(usuario.getEmail(),etiquetaNome,now);
     }
 

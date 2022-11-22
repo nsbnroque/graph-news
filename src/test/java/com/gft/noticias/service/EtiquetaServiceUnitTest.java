@@ -36,7 +36,7 @@ public class EtiquetaServiceUnitTest {
 
     @Test
     void quandoEncontrarEtiquetaPeloNome_EntaoRetornaEtiqueta(){
-        Etiqueta retornada = this.service.encontrarEtiqueta("etiqueta");
+        Etiqueta retornada = this.service.encontrarEtiqueta("etiqueta").get();
         assertEquals(etiqueta.getNome(), retornada.getNome());
     }
 
@@ -51,7 +51,7 @@ public class EtiquetaServiceUnitTest {
 
     @Test
     void quandoSalvarEtiquetaComNomeExistente_RetornaEtiquetaJaSalva(){
-        Etiqueta retornada = this.service.encontrarEtiqueta("etiqueta");
+        Etiqueta retornada = this.service.encontrarEtiqueta("etiqueta").get();
         Etiqueta salva = this.service.salvarEtiqueta(etiqueta);
         assertTrue(retornada.getEtiquetaId() == salva.getEtiquetaId());
     }
@@ -82,7 +82,7 @@ public class EtiquetaServiceUnitTest {
 
     @Test
     void quandoExcluirEtiquetaPeloid_EntaoxcluiEtiqueta(){
-        Long encontrado = this.service.encontrarEtiqueta("etiqueta").getEtiquetaId();
+        Long encontrado = this.service.encontrarEtiqueta("etiqueta").get().getEtiquetaId();
         service.excluirEtiqueta(encontrado);
         assertThrows(EntityNotFoundException.class, ()-> {service.encontrarEtiquetaPeloId(encontrado);});
         

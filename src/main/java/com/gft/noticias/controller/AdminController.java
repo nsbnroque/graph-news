@@ -1,7 +1,5 @@
 package com.gft.noticias.controller;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
-import com.gft.noticias.projections.MaisAcessadasView;
-import com.gft.noticias.service.AcessosService;
 import com.gft.noticias.service.AdminService;
-import com.gft.noticias.service.EtiquetaService;
 import com.gft.noticias.service.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,8 +25,8 @@ public class AdminController {
 
     private final UsuarioService usuarioService;
     private final AdminService adminService;
-    private final AcessosService acessosService;
-    private final EtiquetaService etiquetaService;
+    //private final AcessosService acessosService;
+    //private final EtiquetaService etiquetaService;
 
 
 
@@ -47,18 +41,21 @@ public class AdminController {
     }
 
     @GetMapping("/etiquetas")
-    public ResponseEntity<List<MaisAcessadasView>> listarEtiquetas(Pageable pageable){
-        return ResponseEntity.ok(acessosService.etiquetasMaioresAcessos(etiquetaService.listarTodas()));
+    public ResponseEntity<String> listarEtiquetas(Pageable pageable){
+        //acessosService.maioresAcessos(etiquetaService.listarTodas())
+        return ResponseEntity.ok("OK");
     }
 
     @GetMapping("/trends")
-    public ResponseEntity<Page<Etiqueta>> listarTendencias(Pageable pageable){
-        return ResponseEntity.ok(acessosService.maioresAcessos(etiquetaService.listarTodas()));
+    public ResponseEntity<String> listarTendencias(Pageable pageable){
+        //acessosService.maioresAcessos(etiquetaService.listarTodas())
+        return ResponseEntity.ok("OK");
     }
 
     @GetMapping("/acessos")
-    public ResponseEntity<Page<Etiqueta>> listarAcessos(Pageable pageable){
-        return ResponseEntity.ok(acessosService.maioresAcessos(etiquetaService.listarTodas()));
+    public ResponseEntity<String> listarAcessos(Pageable pageable){
+        //acessosService.maioresAcessos(etiquetaService.listarTodas())
+        return ResponseEntity.ok("Ok");
     }
 
     @PostMapping("/registrar")
