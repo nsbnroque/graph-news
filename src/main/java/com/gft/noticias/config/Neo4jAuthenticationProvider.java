@@ -8,7 +8,6 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.types.Node;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,9 +32,9 @@ public class Neo4jAuthenticationProvider implements AuthenticationProvider {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
         try (Session session = driver.session()) {
-            List<Record> results = session.run("MATCH (n:Usuario) WHERE n.email = $name AND n.senha = $password RETURN n",
-                    Map.of("name", name, "password", password)).list();
-                    System.out.println("RESULTADOS" + results.toString());
+            List<Record> results = session.run("MATCH (n) WHERE n.email = $name RETURN n",
+            Map.of("name", name, "password", password)).list();
+            System.out.println("RESULTADOS" + results.toString());
 
             if (results.isEmpty()) {
                 return null;
@@ -50,7 +49,6 @@ public class Neo4jAuthenticationProvider implements AuthenticationProvider {
             return new UsernamePasswordAuthenticationToken(principal, password, authorities);
         }
     }
-
 
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
