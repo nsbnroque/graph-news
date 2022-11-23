@@ -59,8 +59,8 @@ public class AdminController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<Usuario> registrarUsuario(@RequestParam("role") String role,
-                                   @RequestBody(required = false) Usuario usuario){
+    public ResponseEntity<Usuario> registrarUsuario(
+                                   @RequestBody Usuario usuario){
         Usuario salvo = usuarioService.salvarUsuario(usuario);
         return ResponseEntity.ok(salvo);
     }

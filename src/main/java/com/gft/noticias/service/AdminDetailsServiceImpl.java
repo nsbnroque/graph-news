@@ -11,35 +11,32 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.gft.noticias.entity.Usuario;
-import com.gft.noticias.repository.UsuarioRepository;
+import com.gft.noticias.entity.Admin;
+import com.gft.noticias.repository.AdminRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService{
-    private final UsuarioRepository usuarioRepository;
+public class AdminDetailsServiceImpl {
 
+    private final AdminRepository adminRepository;
+/* 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("Chegou ate o loadByusername");
-        Usuario usuario = buscarUsuarioPeloUsername(email);
-        System.out.println(usuario.toString());
-        String authorityString = usuario.getRole();
+        Admin admin = buscarAdminPeloUsername(email);
+        String authorityString = admin.getRole();
+        System.out.println(authorityString);
         GrantedAuthority authority = new SimpleGrantedAuthority(authorityString);
-        System.out.println(authority.toString());
-        User user = new User(usuario.getEmail(), usuario.getSenha(), List.of(authority));
-        System.out.println(user.toString());
-        return user;
+        return new User(admin.getEmail(), admin.getSenha(), List.of(authority));
     }
 
-    private Usuario buscarUsuarioPeloUsername(String username) {
-        Optional<Usuario> optional = this.usuarioRepository.findUsuarioByEmail(username);
+    private Admin buscarAdminPeloUsername(String username) {
+        Optional<Admin> optional = this.adminRepository.findByEmail(username);
         if(optional.isEmpty()) {
-            throw new UsernameNotFoundException("Usuario não encontrado");
+            throw new UsernameNotFoundException("Administrador não encontrado");
         }
         return optional.get();
     }
-    
+    */
 }

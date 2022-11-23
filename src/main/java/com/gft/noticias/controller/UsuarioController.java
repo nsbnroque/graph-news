@@ -31,11 +31,13 @@ public class UsuarioController {
     private final UsuarioService service;
     private final NoticiasService noticiasService;
 
+    /* 
     @PostMapping
     public ResponseEntity<Usuario> salvarUsuario(@RequestBody Usuario usuario){
         Usuario salvo = service.salvarUsuario(usuario);
         return ResponseEntity.ok(salvo);
     }
+    */
 
     @GetMapping("/{id}")
     public ResponseEntity<ConsultaUsuarioDTO> encontrarUsuario(@PathVariable Long id){

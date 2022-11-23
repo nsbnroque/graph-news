@@ -29,6 +29,7 @@ public class AdminService {
     }
 
     public Admin findByEmail(String email){
+        
         return repository.findByEmail(email);
     }
 
