@@ -73,7 +73,11 @@ public class AdminController {
 
     @DeleteMapping("/admin/excluir/{id}")
     public ResponseEntity<String> excluirAdmin(@PathVariable Long id){
+        try{
         adminService.excluirAdmin(id);
+        } catch (Exception e){
+            ResponseEntity.notFound();
+        }
         return ResponseEntity.ok("Usuário excluído com sucesso.");
     }
 

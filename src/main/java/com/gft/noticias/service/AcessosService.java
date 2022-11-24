@@ -50,7 +50,7 @@ public class AcessosService {
                 .bind(usuario.getEmail()).to("email")
                 .fetchAs(ContagemAcessosDTO.class) 
                 .mappedBy((typeSystem, record) -> new ContagemAcessosDTO(record.get("n").asString(),
-                        record.get("contagem").asInt())) 
+                        record.get("contagem").asInt()))
                 .all(); 
     }
 
