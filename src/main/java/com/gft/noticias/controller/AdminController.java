@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +64,12 @@ public class AdminController {
                                    @RequestBody Usuario usuario){
         Usuario salvo = usuarioService.salvarUsuario(usuario);
         return ResponseEntity.ok(salvo);
+    }
+
+    @PutMapping
+    public ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuario){
+        Usuario editado = usuarioService.editarUsuario(usuario);
+        return ResponseEntity.ok(editado);
     }
 
     @DeleteMapping("/usuarios/excluir/{id}")

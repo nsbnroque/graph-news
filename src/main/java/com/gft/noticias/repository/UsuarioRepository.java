@@ -38,5 +38,12 @@ public interface UsuarioRepository extends Neo4jRepository<Usuario,Long> {
     @Query("MATCH (e:Etiqueta)  MATCH (u:Usuario{$usuario})-[r:ACESSOU]-(e) UNWIND r.acessos AS val RETURN e{.nome}, count(val) AS contagem")
     List<MaisAcessadasView> findMostAccessed(@Param("usuario")Usuario usuario);
 
+    @Query("MATCH (u:Usuario)"
+         +" WHERE u.email= $email" 
+        + "MATCH (u)-[r:TEM_INTERESSE_EM]->(e:Etiqueta)"
+        +"WHERE e.nome= $nome"
+        +"DETACH DELETE r")
+    void deleteRelationship(@Param("email") String emailUsuario, @Param("nome") String etiquetaNome);
+
     
 }
