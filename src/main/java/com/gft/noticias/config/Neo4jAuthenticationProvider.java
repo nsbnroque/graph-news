@@ -41,11 +41,18 @@ public class Neo4jAuthenticationProvider implements AuthenticationProvider {
             }
 
             Node user = results.get(0).get("n").asNode();
+            String role = user.get("role").asString();
+
+            System.out.println(role);
             // Possible to add more information from user
             List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            authorities.add( new SimpleGrantedAuthority(role));
+            
+            //
+            //authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            //System.out.println(authorities.toString());
             final UserDetails principal = new User(name, password, authorities);
-
+            //System.out.println(principal.toString());
             return new UsernamePasswordAuthenticationToken(principal, password, authorities);
         }
     }

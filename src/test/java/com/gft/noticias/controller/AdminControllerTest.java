@@ -5,11 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.mockito.Mockito.when;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,11 +29,18 @@ public class AdminControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private WebApplicationContext context;
+
     @BeforeAll
-    static void setup(){
-        
+    public void setup() {
+        mockMvc = MockMvcBuilders
+          .webAppContextSetup(context)
+          .apply(springSecurity())
+          .build();
     }
-    
+
+    @WithMockUser(roles = "ADMIN")
     @Test
     void quandoCadastrarAdministrador_EntaoRetornaAdministrador() throws Exception {
 
@@ -67,6 +75,11 @@ public class AdminControllerTest {
 
     @Test
     void quandoEnviarEmailParaUsuario_EntaoEmailDeveSerEnviado(){
+
+    }
+
+    @Test
+    void quandoEditarUsuario_EntaoUsuarioDeveSerEditado(){
 
     }
 

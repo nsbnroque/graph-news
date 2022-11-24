@@ -86,6 +86,12 @@ public class UsuarioService {
         return this.salvarUsuario(usuario);
     }
 
+    public void excluirInteresse(Usuario usuario, Etiqueta etiqueta){
+        String email = usuario.getEmail();
+        String nome = etiqueta.getNome();
+        repository.deleteRelationship(email,nome);
+    }
+
     public List<Etiqueta> listarEtiquetas(Usuario usuario) {
         return repository.findFavorites(usuario);
     }
