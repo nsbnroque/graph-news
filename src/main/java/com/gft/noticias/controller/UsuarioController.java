@@ -1,6 +1,7 @@
 package com.gft.noticias.controller;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -54,8 +55,16 @@ public class UsuarioController {
     @GetMapping("/{id}/noticias/")
     public ResponseEntity<NoticiasResponse> retornaNoticias(@PathVariable Long id, @RequestParam("q") String etiquetaNome,@RequestParam(name="date", required = false) String data){
         if (data == null) {
-            data = LocalDate.now().toString();        
+            Usuario encontrado = service.encontrarUsuario(id);
+            LocalDate localDate = LocalDate.now();//For reference
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataString = localDate.format(formatter);
+            service.acessarEtiqueta(encontrado, etiquetaNome); 
+            NoticiasResponse noticias = noticiasService.obterNoticias(etiquetaNome, dataString);
+        return ResponseEntity.ok(noticias);    
+
         }
+        
         
         Usuario encontrado = service.encontrarUsuario(id);
         //Etiqueta etiqueta = etiquetaService.encontrarEtiqueta(etiquetaNome);  

@@ -3,11 +3,14 @@ package com.gft.noticias.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.gft.noticias.dto.ConsultaUsuarioDTO;
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 import com.gft.noticias.projections.MaisAcessadasView;
@@ -45,5 +48,5 @@ public interface UsuarioRepository extends Neo4jRepository<Usuario,Long> {
         +"DETACH DELETE r")
     void deleteRelationship(@Param("email") String emailUsuario, @Param("nome") String etiquetaNome);
 
-    
+    Page<Usuario> findAll(Pageable pageable);
 }

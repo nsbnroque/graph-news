@@ -4,7 +4,6 @@ import com.gft.noticias.entity.Usuario;
 
 import lombok.Data;
 
-@Data
 public class UsuarioMapper {
    /* 
     public static Usuario fromDTO(RegistroUsuarioDTO dto){
@@ -13,7 +12,7 @@ public class UsuarioMapper {
     */
 
     public static ConsultaUsuarioDTO fromEntity(Usuario usuario){
-        return new ConsultaUsuarioDTO(usuario.getNome(), usuario.getEmail());
+        return new ConsultaUsuarioDTO(usuario.getUsuarioId(),usuario.getNome(), usuario.getEmail());
     }
     
 }

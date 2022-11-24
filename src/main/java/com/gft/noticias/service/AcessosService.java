@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.gft.noticias.dto.ContagemAcessosDTO;
 import com.gft.noticias.dto.EtiquetaDTO;
+import com.gft.noticias.dto.HistoricoDTO;
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 
@@ -39,22 +40,20 @@ public class AcessosService {
         return this.fetchAcessos(etiqueta).stream().collect(Collectors.toList());
     }
 
-    public Collection<ContagemAcessosDTO> fetchHistorico(Usuario usuario) {
+    public Collection<HistoricoDTO> fetchHistorico(Usuario usuario) {
         return this.neo4jClient
                 .query(""
                        + "MATCH (usuario:Usuario {email : $email})"
                        +" MATCH (usuario)-[r:ACESSOU]-(etiqueta)"
-                       + "UNWIND r.acessos AS val"
-                       +" RETURN etiqueta.nome AS n, COUNT(val) AS contagem ORDER BY contagem DESC"
+                       +" RETURN etiqueta.nome AS n"
                 ) 
                 .bind(usuario.getEmail()).to("email")
-                .fetchAs(ContagemAcessosDTO.class) 
-                .mappedBy((typeSystem, record) -> new ContagemAcessosDTO(record.get("n").asString(),
-                        record.get("contagem").asInt()))
+                .fetchAs(HistoricoDTO.class) 
+                .mappedBy((typeSystem, record) -> new HistoricoDTO(record.get("n").asString()))
                 .all(); 
     }
 
-    public List<ContagemAcessosDTO> historicoAcessos(Usuario usuario){
+    public List<HistoricoDTO> historicoAcessos(Usuario usuario){
         return this.fetchHistorico(usuario).stream().collect(Collectors.toList());
     }
 
