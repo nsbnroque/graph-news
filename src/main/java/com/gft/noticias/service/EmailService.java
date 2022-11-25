@@ -1,7 +1,5 @@
 package com.gft.noticias.service;
 
-import java.io.UnsupportedEncodingException;
-import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

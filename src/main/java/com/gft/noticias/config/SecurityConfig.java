@@ -41,7 +41,6 @@ public class SecurityConfig {
                 .antMatchers("/usuarios/**").hasAnyRole( "USER")
                 .anyRequest().authenticated()
                 .and().httpBasic();
-
         return http.build();
     }
     

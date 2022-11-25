@@ -11,15 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gft.noticias.dto.ConsultaUsuarioDTO;
 import com.gft.noticias.dto.HistoricoDTO;
 import com.gft.noticias.dto.SenhaForm;
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 import com.gft.noticias.exception.DuplicatedUniquePropertyException;
 import com.gft.noticias.exception.EntityNotFoundException;
-import com.gft.noticias.projections.MaisAcessadasView;
-import com.gft.noticias.projections.ParametrosView;
 import com.gft.noticias.projections.UsuarioEtiquetasProjection;
 import com.gft.noticias.repository.UsuarioRepository;
 

@@ -28,47 +28,16 @@ public class EmailController {
     private final UsuarioService usuarioService;
     
     @RequestMapping("/{id}")
-    public ResponseEntity<List<Noticias>> enviarEmail(@PathVariable Long id) throws UnsupportedEncodingException{
-        
-        /*
-        LocalDate localDate = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String dataString = localDate.format(formatter);
-             Usuario encontrado = usuarioService.encontrarUsuario(id);
-        try {
-           List<Noticias> noticias = emailService.gerarInteresses(encontrado,dataString);
-           ObjectMapper mapper = new ObjectMapper();
-           String newJsonData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(noticias);
-           emailService.enviarEmail(encontrado.getEmail(), newJsonData, "Notícias do dia");
-           return ResponseEntity.ok(noticias);
-           
-        }catch(Exception e){
-            return ResponseEntity.noContent().build();
-        }    
-         */    
+    public ResponseEntity<List<Noticias>> enviarEmail(@PathVariable Long id) throws UnsupportedEncodingException{    
         return ResponseEntity.ok(emailService.gerarEmail(id));
     }
 
     @RequestMapping("/enviar")
-    public ResponseEntity<List<Noticias>> enviarEmailParaTodos() throws UnsupportedEncodingException{
-            List<Usuario> usuarios = usuarioService.listar();
-            LocalDate localDate = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String dataString = localDate.format(formatter);
-        for(Usuario u : usuarios){
-            List<Noticias> noticias = emailService.gerarInteresses(u,dataString);
-            if (!noticias.isEmpty()){
-                ObjectMapper mapper = new ObjectMapper();
-                String newJsonData;
-                try {
-                    newJsonData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(noticias);
-                    emailService.enviarEmail(u.getEmail(), newJsonData, "Notícias do dia");
-                    return ResponseEntity.ok(noticias);
-                } catch (JsonProcessingException e) {
-                    e.getMessage();                   
-                }
-            }
-    }
-    return ResponseEntity.badRequest().build();
+    public ResponseEntity<String> enviarEmailParaTodos() throws UnsupportedEncodingException{
+        List<Usuario> usuarios = usuarioService.listar();
+        for (Usuario u : usuarios){
+            emailService.gerarEmail(u.getUsuarioId());
+        }
+    return ResponseEntity.ok("Emails enviados para todos os usuarios.");
 }
 }

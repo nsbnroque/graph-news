@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,7 +82,6 @@ public class UsuarioController {
     @GetMapping("/{id}/noticias/")
     @PreAuthorize("@authenticatedUserService.hasId(#id)")
     public ResponseEntity<List<Noticias>> retornaNoticias(@PathVariable Long id, @RequestParam("q") String etiquetaNome,@RequestParam(name="date", required = false) String data){
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         if (data == null) {
             Usuario encontrado = service.encontrarUsuario(id);
             LocalDate localDate = LocalDate.now();
