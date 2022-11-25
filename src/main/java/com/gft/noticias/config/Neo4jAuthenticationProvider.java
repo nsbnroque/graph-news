@@ -52,7 +52,6 @@ public class Neo4jAuthenticationProvider implements AuthenticationProvider {
             //authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             //System.out.println(authorities.toString());
             final UserDetails principal = new User(name, password, authorities);
-            //System.out.println(principal.toString());
             return new UsernamePasswordAuthenticationToken(principal, password, authorities);
         }
     }

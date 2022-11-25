@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gft.noticias.dto.ConsultaUsuarioDTO;
+import com.gft.noticias.dto.ContagemAcessosDTO;
 import com.gft.noticias.dto.HistoricoDTO;
 import com.gft.noticias.dto.UsuarioMapper;
 import com.gft.noticias.entity.Usuario;
@@ -66,9 +67,8 @@ public class AdminController {
     }
 
     @GetMapping("/acessos")
-    public ResponseEntity<String> listarAcessos(Pageable pageable){
-        //acessosService.maioresAcessos(etiquetaService.listarTodas())
-        return ResponseEntity.ok("Ok");
+    public ResponseEntity<List<ContagemAcessosDTO>> listarAcessos(){
+        return ResponseEntity.ok(acessosService.contarAcessos());
     }
 
     @PostMapping("/registrar")

@@ -11,6 +11,6 @@ public class Noticias {
 
     private String title;
     private String description;
-    private String datetime;
+    private String date;
 
 }

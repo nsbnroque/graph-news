@@ -1,6 +1,6 @@
 package com.gft.noticias.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,11 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class NoticiasService {
+    public List<Noticias> listarNoticias(String q, String date){
+        NoticiasResponse retornadas = obterNoticias(q, date);
+        List<Noticias> filtradas = filtrarData(retornadas.getList());
+        return filtradas;
+    }
       
     public NoticiasResponse obterNoticias(String q, String date){
         WebClient webClient =  WebClient.create("https://apinoticias.tedk.com.br/api/");
@@ -23,33 +28,18 @@ public class NoticiasService {
                               .queryParam("date", date).build())
        .retrieve()
        .bodyToMono(NoticiasResponse.class);
-       
-       //mono.subscribe(noticiasResponse -> {System.out.println(noticiasResponse);
-    //});
         return mono.block();       
     }
 
-    /* 
     public List<Noticias> filtrarData(List<Noticias> noticias){
         List<Noticias> filtradas = new ArrayList<>();
         for(Noticias n : noticias){
-            n.getDatetime().replace(" às ", " ");
-            System.out.println(n.getDatetime());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");       
-            LocalDateTime dateTime = LocalDateTime.parse(n.getDatetime(), formatter);
-            LocalDateTime agora = LocalDateTime.now();
-            
-
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
+            LocalDate hoje =  LocalDate.now();              
+            String hojeFormatado = hoje.format(formatter);
+            if(n.getDate().equals(hojeFormatado)){
+                filtradas.add(n);}              
         }
         return filtradas;
-    }
-
-    static final long DAY = 24 * 60 * 60 * 1000;
-    public boolean inLastDay(Date agora) {
-    return agora.getTime() > System.currentTimeMillis() - DAY;
-    }
-*/
-
-    
-    
+    } 
 }

@@ -65,12 +65,29 @@ public class AcessosService {
                .all();
     }
 
-    public Collection<EtiquetaDTO> fetchTrends(String data){
+    public Collection<EtiquetaDTO> fetchTrends(){
         return this.neo4jClient
-               .query("").bind(data).to("data")
+               .query("
+               ").bind(data).to("data")
                .fetchAs(EtiquetaDTO.class)
                .mappedBy((typeSystem,record) -> new EtiquetaDTO(record.get("nome").asString()))
                .all();
+    }
+
+
+    public Collection<ContagemAcessosDTO> fetchAllTimesTrends(){
+        return this.neo4jClient
+               .query("MATCH ()-[r:ACESSOU]->(etiqueta)"
+               +" UNWIND r.acessos AS val"
+               +" RETURN etiqueta.nome AS n, COUNT(val) AS contagem ORDER BY contagem DESC")
+               .fetchAs(ContagemAcessosDTO.class) 
+                .mappedBy((typeSystem, record) -> new ContagemAcessosDTO(record.get("n").asString(),
+                        record.get("contagem").asInt()))
+                .all(); 
+    }
+
+    public List<ContagemAcessosDTO> contarAcessos(){
+        return this.fetchAllTimesTrends().stream().collect(Collectors.toList());
     }
 
     

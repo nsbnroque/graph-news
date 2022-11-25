@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gft.noticias.client.Noticias;
 import com.gft.noticias.client.NoticiasResponse;
 import com.gft.noticias.dto.ConsultaUsuarioDTO;
 import com.gft.noticias.dto.UsuarioMapper;
@@ -41,7 +43,8 @@ public class UsuarioController {
     */
 
     @GetMapping("/{id}")
-    public ResponseEntity<ConsultaUsuarioDTO> encontrarUsuario(@PathVariable Long id){
+    //@PreAuthorize("#id == authentication.usuarioId")
+    public ResponseEntity<ConsultaUsuarioDTO> encontrarUsuario(@PathVariable("id") Long id){
         Usuario encontrado = service.encontrarUsuario(id); 
         return ResponseEntity.ok(UsuarioMapper.fromEntity(encontrado));
     }
@@ -53,23 +56,21 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}/noticias/")
-    public ResponseEntity<NoticiasResponse> retornaNoticias(@PathVariable Long id, @RequestParam("q") String etiquetaNome,@RequestParam(name="date", required = false) String data){
+    public ResponseEntity<List<Noticias>> retornaNoticias(@PathVariable Long id, @RequestParam("q") String etiquetaNome,@RequestParam(name="date", required = false) String data){
         if (data == null) {
             Usuario encontrado = service.encontrarUsuario(id);
             LocalDate localDate = LocalDate.now();//For reference
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String dataString = localDate.format(formatter);
             service.acessarEtiqueta(encontrado, etiquetaNome); 
-            NoticiasResponse noticias = noticiasService.obterNoticias(etiquetaNome, dataString);
+            List<Noticias> noticias = noticiasService.listarNoticias(etiquetaNome, dataString);
         return ResponseEntity.ok(noticias);    
 
         }
-        
-        
+           
         Usuario encontrado = service.encontrarUsuario(id);
-        //Etiqueta etiqueta = etiquetaService.encontrarEtiqueta(etiquetaNome);  
         service.acessarEtiqueta(encontrado, etiquetaNome); 
-        NoticiasResponse noticias = noticiasService.obterNoticias(etiquetaNome, data);
+        List<Noticias> noticias = noticiasService.listarNoticias(etiquetaNome, data);
         return ResponseEntity.ok(noticias);     
     }
 
