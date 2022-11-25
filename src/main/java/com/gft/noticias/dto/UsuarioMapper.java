@@ -11,5 +11,9 @@ public class UsuarioMapper {
     public static Usuario toEntity(Long id,UsuarioForm form) {
         return new Usuario(id,form.getNome(),form.getEmail(),null,null,null,null);
     }
+
+    public static Usuario toEntity(Long id,RegistroForm form) {
+        return new Usuario(id,form.getNome(),form.getEmail(),form.getSenha(),null,null,null);
+    }
     
 }

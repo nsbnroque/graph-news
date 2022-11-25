@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gft.noticias.dto.AdminMapper;
 import com.gft.noticias.dto.ConsultaUsuarioDTO;
 import com.gft.noticias.dto.ContagemAcessosDTO;
 import com.gft.noticias.dto.HistoricoDTO;
+import com.gft.noticias.dto.RegistroForm;
 import com.gft.noticias.dto.UsuarioMapper;
 import com.gft.noticias.entity.Usuario;
 import com.gft.noticias.service.AcessosService;
@@ -60,22 +62,22 @@ public class AdminController {
         return ResponseEntity.ok("OK");
     }
 
-    @GetMapping("/trends")
-    public ResponseEntity<String> listarTendencias(Pageable pageable){
-        //acessosService.maioresAcessos(etiquetaService.listarTodas())
-        return ResponseEntity.ok("OK");
-    }
-
     @GetMapping("/acessos")
     public ResponseEntity<List<ContagemAcessosDTO>> listarAcessos(){
         return ResponseEntity.ok(acessosService.contarAcessos());
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<Usuario> registrarUsuario(
-                                   @RequestBody Usuario usuario){
-        Usuario salvo = usuarioService.salvarUsuario(usuario);
-        return ResponseEntity.ok(salvo);
+    public ResponseEntity<String> registrar(
+                                   @RequestBody RegistroForm form){
+        if (form.getRole().equals("ROLE_USER")){
+            usuarioService.salvarUsuario(UsuarioMapper.toEntity(null, form));
+            return ResponseEntity.ok("Usuário salvo com sucesso.");
+        }else if (form.getRole().equals("ROLE_ADMIN")){
+            adminService.salvarAdmin(AdminMapper.toEntity(null, form));
+            return ResponseEntity.ok("Administrador salvo com sucesso.");
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping
