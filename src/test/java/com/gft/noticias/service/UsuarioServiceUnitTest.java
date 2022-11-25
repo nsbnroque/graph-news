@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -21,7 +20,6 @@ import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 import com.gft.noticias.exception.DuplicatedUniquePropertyException;
 import com.gft.noticias.projections.UsuarioEtiquetasProjection;
-import com.gft.noticias.repository.AcessosRepository;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -29,8 +27,7 @@ public class UsuarioServiceUnitTest {
 
     @Autowired
     private UsuarioService service;
-    @Autowired
-    private AcessosRepository acessosRepository;
+
 
     private static Usuario usuario;
 
@@ -99,7 +96,7 @@ public class UsuarioServiceUnitTest {
     void quandoEditarUsuario_EntaoRetornaUsuarioEditado(){
         Usuario encontrado = service.encontrarUsuarioPorEmail("gasa@gft.com");
         encontrado.setNome("Gael Santos");
-        Usuario editado = service.editarUsuario(encontrado);
+        Usuario editado = service.editarUsuario(encontrado.getUsuarioId(),encontrado);
         assertEquals(encontrado.getUsuarioId(), editado.getUsuarioId());
     }
 

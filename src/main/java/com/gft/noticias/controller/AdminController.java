@@ -21,9 +21,11 @@ import com.gft.noticias.dto.ContagemAcessosDTO;
 import com.gft.noticias.dto.HistoricoDTO;
 import com.gft.noticias.dto.RegistroForm;
 import com.gft.noticias.dto.UsuarioMapper;
+import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 import com.gft.noticias.service.AcessosService;
 import com.gft.noticias.service.AdminService;
+import com.gft.noticias.service.EtiquetaService;
 import com.gft.noticias.service.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,7 +38,7 @@ public class AdminController {
     private final UsuarioService usuarioService;
     private final AdminService adminService;
     private final AcessosService acessosService;
-    //private final EtiquetaService etiquetaService;
+    private final EtiquetaService etiquetaService;
 
 
 
@@ -47,8 +49,8 @@ public class AdminController {
     }
 
     @GetMapping("usuarios/{id}")
-    public ResponseEntity<Usuario> encontrarUsuario(@PathVariable Long id){     
-        return ResponseEntity.ok(usuarioService.encontrarUsuario(id));
+    public ResponseEntity<ConsultaUsuarioDTO> encontrarUsuario(@PathVariable Long id){     
+        return ResponseEntity.ok(UsuarioMapper.fromEntity(usuarioService.encontrarUsuario(id)));
     }
 
     @GetMapping("usuarios/{id}/parametros")
@@ -58,8 +60,8 @@ public class AdminController {
     }
 
     @GetMapping("/etiquetas")
-    public ResponseEntity<String> listarEtiquetas(Pageable pageable){
-        return ResponseEntity.ok("OK");
+    public ResponseEntity<List<Etiqueta>> listarEtiquetas(Pageable pageable){
+        return ResponseEntity.ok(etiquetaService.listarTodas());
     }
 
     @GetMapping("/acessos")
@@ -80,10 +82,10 @@ public class AdminController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PutMapping
-    public ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuario){
-        Usuario editado = usuarioService.editarUsuario(usuario);
-        return ResponseEntity.ok(editado);
+    @PutMapping("/usuarios/{id}/editar")
+    public ResponseEntity<ConsultaUsuarioDTO> editarUsuario(@PathVariable Long id,@RequestBody Usuario usuario){
+        Usuario editado = usuarioService.editarUsuario(id, usuario);
+        return ResponseEntity.ok(UsuarioMapper.fromEntity(editado));
     }
 
     @DeleteMapping("/usuarios/excluir/{id}")

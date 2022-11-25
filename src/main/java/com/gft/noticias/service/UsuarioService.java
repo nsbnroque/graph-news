@@ -80,11 +80,12 @@ public class UsuarioService {
         return encontrado.get();
     }
 
-    public Usuario editarUsuario(Usuario usuario) {
-        if (usuario.getUsuarioId() != null){
-            return repository.save(usuario);
-        }
-        return this.salvarUsuario(usuario);
+    public Usuario editarUsuario(Long id, Usuario usuario) {
+        Usuario retornado = repository.findById(id).get();
+        if(usuario.getEmail() != null) retornado.setEmail(usuario.getEmail());
+        if(usuario.getNome() != null) retornado.setNome(usuario.getNome());
+        if(usuario.getSenha() != null) retornado.setSenha(usuario.getSenha());
+        return this.salvarUsuario(retornado);
     }
 
     public void excluirInteresse(Usuario usuario, Etiqueta etiqueta){

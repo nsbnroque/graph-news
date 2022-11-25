@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/email")
+@RequestMapping("admin/email")
 public class EmailController {
 
     private final EmailService emailService;

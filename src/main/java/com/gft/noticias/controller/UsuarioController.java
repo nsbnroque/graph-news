@@ -58,7 +58,7 @@ public class UsuarioController {
     @PutMapping("/{id}/editar")
     @PreAuthorize("@authenticatedUserService.hasId(#id)")
     public ResponseEntity<ConsultaUsuarioDTO> editarUsuario(@PathVariable Long id, @RequestBody UsuarioForm form){
-        Usuario retorno = service.editarUsuario(UsuarioMapper.toEntity(id,form));
+        Usuario retorno = service.editarUsuario(id,UsuarioMapper.toEntity(form));
         return ResponseEntity.ok(UsuarioMapper.fromEntity(retorno));
     }
 

@@ -29,8 +29,9 @@ public class AdminService {
     }
 
     public Admin findByEmail(String email){
-        
-        return repository.findByEmail(email);
+        Optional<Admin> encontrado = repository.findByEmail(email);
+        if(encontrado.isEmpty()) throw new EntityNotFoundException("Administrador não encontrado com o email: " + email);
+        return encontrado.get();
     }
 
     public Admin editar(Long id, Admin admin){

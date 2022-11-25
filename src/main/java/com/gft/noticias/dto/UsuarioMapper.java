@@ -8,8 +8,8 @@ public class UsuarioMapper {
         return new ConsultaUsuarioDTO(usuario.getUsuarioId(),usuario.getNome(), usuario.getEmail());
     }
 
-    public static Usuario toEntity(Long id,UsuarioForm form) {
-        return new Usuario(id,form.getNome(),form.getEmail(),null,null,null,null);
+    public static Usuario toEntity(UsuarioForm form) {
+        return new Usuario(null,form.getNome(),form.getEmail(),null,null,null,null);
     }
 
     public static Usuario toEntity(Long id,RegistroForm form) {

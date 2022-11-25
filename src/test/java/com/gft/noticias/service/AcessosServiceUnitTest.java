@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.gft.noticias.dto.ContagemAcessosDTO;
+import com.gft.noticias.dto.HistoricoDTO;
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 
@@ -51,7 +51,7 @@ public class AcessosServiceUnitTest {
     void quandoChamarHistoricoDeAcessos_EntaoRetornaHistorico() {
         Usuario retornado = usuarioService.encontrarUsuarioPorEmail("user@gft.com");
         System.out.println(retornado.toString());
-        List<ContagemAcessosDTO> historico = acessosService.historicoAcessos(retornado);
+        List<HistoricoDTO> historico = acessosService.historicoAcessos(retornado);
         System.out.println("--------------------------------------------------\n"
                             + historico.toString()
                             + "\n--------------------------------------------------\n");

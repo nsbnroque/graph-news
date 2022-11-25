@@ -65,15 +65,6 @@ public class AcessosService {
                .all();
     }
 
-    public Collection<EtiquetaDTO> fetchTrends(){
-        return this.neo4jClient
-               .query("
-               ").bind(data).to("data")
-               .fetchAs(EtiquetaDTO.class)
-               .mappedBy((typeSystem,record) -> new EtiquetaDTO(record.get("nome").asString()))
-               .all();
-    }
-
 
     public Collection<ContagemAcessosDTO> fetchAllTimesTrends(){
         return this.neo4jClient
