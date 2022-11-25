@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gft.noticias.client.Noticias;
 import com.gft.noticias.dto.ConsultaUsuarioDTO;
+import com.gft.noticias.dto.HistoricoDTO;
+import com.gft.noticias.dto.SenhaForm;
 import com.gft.noticias.dto.UsuarioForm;
 import com.gft.noticias.dto.UsuarioMapper;
 import com.gft.noticias.entity.Etiqueta;
@@ -59,6 +62,24 @@ public class UsuarioController {
         Usuario retorno = service.editarUsuario(UsuarioMapper.toEntity(id,form));
         return ResponseEntity.ok(UsuarioMapper.fromEntity(retorno));
     }
+
+    @PatchMapping("/{id}/senha")
+    @PreAuthorize("@authenticatedUserService.hasId(#id)")
+    public ResponseEntity<String> mudarSenha(@PathVariable Long id, @RequestBody SenhaForm form){
+        if(form.getSenha() == form.getConfirmacao()){
+            service.mudarSenha(id,form);
+            return ResponseEntity.ok("Senha alterada com sucesso");
+        }
+        return ResponseEntity.badRequest().body("Senhas não coincidem.");
+    }
+
+    @GetMapping("/{id}/historico")
+    @PreAuthorize("@authenticatedUserService.hasId(#id)")
+    public ResponseEntity<List<HistoricoDTO>> historico(@PathVariable Long id){
+        return ResponseEntity.ok(service.listarParametrosAcessados(id));
+
+    }
+
 
     @GetMapping("/{id}/noticias/")
     @PreAuthorize("@authenticatedUserService.hasId(#id)")
