@@ -90,14 +90,14 @@ public class AdminController {
         return ResponseEntity.ok("Usuário excluído com sucesso.");
     }
 
-    @DeleteMapping("/admin/excluir/{id}")
+    @DeleteMapping("/excluir/{id}")
     public ResponseEntity<String> excluirAdmin(@PathVariable Long id){
         try{
         adminService.excluirAdmin(id);
         } catch (Exception e){
             ResponseEntity.notFound();
         }
-        return ResponseEntity.ok("Usuário excluído com sucesso.");
+        return ResponseEntity.ok("Administrador excluído com sucesso.");
     }
 
 
