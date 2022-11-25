@@ -39,7 +39,7 @@ public class EmailService {
         return "Email enviado com sucesso";
     }
 
-    public List<Noticias> gerarEmail(Long id) throws UnsupportedEncodingException{
+    public List<Noticias> gerarEmail(Long id){
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataString = localDate.format(formatter);
@@ -53,25 +53,17 @@ public class EmailService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    public List<Noticias> gerarInteresses(Usuario usuario, String data) throws UnsupportedEncodingException{
-        List<Noticias> noticias = new ArrayList<>();
-        List<Etiqueta> etiquetas = usuarioService.listarEtiquetas(usuario);   
-        for(Etiqueta e : etiquetas){
-            String novaString = removerAcentos(e.getNome());
-            String novaString2 = novaString.replaceAll("[\\s|\u00A0]+", "");
-            System.out.println(novaString2);
-            List<Noticias> novo = noticiasService.listarNoticias(novaString2, data);
-            System.out.println(novo.toString());
-            if (novo != null) noticias.addAll(novo);
-        }
         return noticias;
     }
 
-    public static String removerAcentos(String str) {
-        return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+    public List<Noticias> gerarInteresses(Usuario usuario, String data){
+        List<Noticias> noticias = new ArrayList<>();
+        List<Etiqueta> etiquetas = usuarioService.listarEtiquetas(usuario);   
+        for(Etiqueta e : etiquetas){
+            List<Noticias> novo = noticiasService.listarNoticias(e.getNome(), data);
+            if (novo != null) noticias.addAll(novo);
+        }
+        return noticias;
     }
     
 }

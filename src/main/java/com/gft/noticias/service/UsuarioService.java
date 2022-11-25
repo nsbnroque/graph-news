@@ -65,8 +65,7 @@ public class UsuarioService {
         }
         return repository.findByUsuarioId(usuario.getUsuarioId());
     }
-
-    
+ 
     public void acessarEtiqueta(Usuario usuario, String etiquetaNome){
         LocalDate data = LocalDate.now();
         String now
@@ -100,11 +99,7 @@ public class UsuarioService {
     public List<Etiqueta> listarEtiquetas(Usuario usuario) {
         return usuario.getEtiquetas();
     }
-/* 
-    public List<MaisAcessadasView> maioresAcessos(Usuario usuario){
-        return acessosService.;
-    }
-*/
+
     public List<HistoricoDTO> listarParametrosAcessados(Long id) {
         Usuario encontrado = repository.findById(id).get();
         return acessosService.historicoAcessos(encontrado);

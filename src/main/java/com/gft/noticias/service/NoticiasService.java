@@ -1,5 +1,6 @@
 package com.gft.noticias.service;
 
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,8 +16,13 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class NoticiasService {
+    public static String removerAcentos(String str) {
+        return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+    }
     public List<Noticias> listarNoticias(String q, String date){
-        NoticiasResponse retornadas = obterNoticias(q, date);
+        String novaString = removerAcentos(q);
+        String parametro = novaString.replaceAll("[\\s|\u00A0]+", "");
+        NoticiasResponse retornadas = obterNoticias(parametro, date);
         List<Noticias> filtradas = filtrarData(retornadas.getList());
         return filtradas;
     }
