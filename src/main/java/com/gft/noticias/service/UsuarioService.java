@@ -119,6 +119,10 @@ public class UsuarioService {
         editado.setSenha(form.getSenha());
         return repository.save(editado);
     }
+
+    public List<Usuario> listar() {
+        return repository.findAll();
+    }
     
 
 }

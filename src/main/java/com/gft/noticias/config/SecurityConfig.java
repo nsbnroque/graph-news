@@ -29,8 +29,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println(
-            "------------------------------------------------------------------------------\n" + passwordEncoder.encode("senha123"));
         return passwordEncoder;
     }
 
@@ -39,7 +37,6 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/usuarios/**").hasAnyRole( "USER")
                 .anyRequest().authenticated()

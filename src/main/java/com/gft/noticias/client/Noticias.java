@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class Noticias {
 
     private String title;
-    private String description;
+    private String link;
     private String date;
 
 }

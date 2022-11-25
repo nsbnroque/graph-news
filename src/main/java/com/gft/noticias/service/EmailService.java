@@ -1,6 +1,9 @@
 package com.gft.noticias.service;
 
+import java.io.UnsupportedEncodingException;
+import java.text.Normalizer;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +11,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.noticias.client.Noticias;
-import com.gft.noticias.client.NoticiasResponse;
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 
@@ -35,17 +39,39 @@ public class EmailService {
         return "Email enviado com sucesso";
     }
 
-    public List<Noticias> gerarEmail(Usuario usuario){
+    public List<Noticias> gerarEmail(Long id) throws UnsupportedEncodingException{
+        LocalDate localDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataString = localDate.format(formatter);
+         Usuario encontrado = usuarioService.encontrarUsuario(id);
+        List<Noticias> noticias = gerarInteresses(encontrado,dataString);
+        ObjectMapper mapper = new ObjectMapper();
+        String newJsonData;
+        try {
+            newJsonData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(noticias);
+            enviarEmail(encontrado.getEmail(), newJsonData, "Notícias do dia");
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
-    public List<Noticias> gerarInteresses(Usuario usuario, String data){
+    public List<Noticias> gerarInteresses(Usuario usuario, String data) throws UnsupportedEncodingException{
         List<Noticias> noticias = new ArrayList<>();
         List<Etiqueta> etiquetas = usuarioService.listarEtiquetas(usuario);   
         for(Etiqueta e : etiquetas){
-            noticias.addAll(noticiasService.listarNoticias(e.getNome(), data));
+            String novaString = removerAcentos(e.getNome());
+            String novaString2 = novaString.replaceAll("[\\s|\u00A0]+", "");
+            System.out.println(novaString2);
+            List<Noticias> novo = noticiasService.listarNoticias(novaString2, data);
+            System.out.println(novo.toString());
+            if (novo != null) noticias.addAll(novo);
         }
         return noticias;
+    }
+
+    public static String removerAcentos(String str) {
+        return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
     }
     
 }

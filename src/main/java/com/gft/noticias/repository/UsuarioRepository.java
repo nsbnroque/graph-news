@@ -10,10 +10,8 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.gft.noticias.dto.ConsultaUsuarioDTO;
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
-import com.gft.noticias.projections.MaisAcessadasView;
 import com.gft.noticias.projections.UsuarioEtiquetasProjection;
 
 @Repository
