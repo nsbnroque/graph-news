@@ -29,23 +29,17 @@ public interface UsuarioRepository extends Neo4jRepository<Usuario,Long> {
 
     UsuarioEtiquetasProjection findByUsuarioId(@Param("id") Long id);
 
-    @Query("MATCH (u:Usuario{$usuario} -[r:TEM_INTERESSE_EM]->(e) RETURN e")
+    @Query("MATCH (u: {$usuario}) -[r:TEM_INTERESSE_EM]->(e) RETURN e")
     List<Etiqueta> findFavorites(@Param("usuario")Usuario usuario);
-
-    @Query("MATCH (u:Usuario{$usuario} -[r:TEM_INTERESSE_EM*2]->(e) RETURN e")
-    List<Etiqueta> findRecommendations(@Param("usuario")Usuario usuario);
 
     @Query("MATCH (u)-[r:ACESSOU]->(e) RETURN e WHERE NOT EXISTS (u)-[:TEM_INTERESSE_EM]-(e) RETURN e")
     List<Etiqueta> findTrends(Usuario usuario);
 
-    @Query("MATCH (e:Etiqueta)  MATCH (u:Usuario{$usuario})-[r:ACESSOU]-(e) UNWIND r.acessos AS val RETURN e{.nome}, count(val) AS contagem")
-    List<MaisAcessadasView> findMostAccessed(@Param("usuario")Usuario usuario);
-
     @Query("MATCH (u:Usuario)"
          +" WHERE u.email= $email" 
-        + "MATCH (u)-[r:TEM_INTERESSE_EM]->(e:Etiqueta)"
-        +"WHERE e.nome= $nome"
-        +"DETACH DELETE r")
+        + " MATCH (u)-[r:TEM_INTERESSE_EM]->(e:Etiqueta)"
+        +" WHERE e.nome= $nome"
+        +" DETACH DELETE r")
     void deleteRelationship(@Param("email") String emailUsuario, @Param("nome") String etiquetaNome);
 
     Page<Usuario> findAll(Pageable pageable);

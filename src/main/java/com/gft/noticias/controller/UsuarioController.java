@@ -80,7 +80,6 @@ public class UsuarioController {
 
     }
 
-
     @GetMapping("/{id}/noticias/")
     @PreAuthorize("@authenticatedUserService.hasId(#id)")
     public ResponseEntity<List<Noticias>> retornaNoticias(@PathVariable Long id, @RequestParam("q") String etiquetaNome,@RequestParam(name="date", required = false) String data){

@@ -98,7 +98,7 @@ public class UsuarioService {
     }
 
     public List<Etiqueta> listarEtiquetas(Usuario usuario) {
-        return repository.findFavorites(usuario);
+        return usuario.getEtiquetas();
     }
 /* 
     public List<MaisAcessadasView> maioresAcessos(Usuario usuario){

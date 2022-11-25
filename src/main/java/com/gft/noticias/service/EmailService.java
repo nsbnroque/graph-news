@@ -39,32 +39,11 @@ public class EmailService {
         return null;
     }
 
-    public List<NoticiasResponse> gerarInteresses(Usuario usuario, LocalDate data){
-        List<NoticiasResponse> noticias = new ArrayList<>();
-        List<Etiqueta> etiquetas = usuarioService.listarEtiquetas(usuario);
-        String date = data.toString();   
+    public List<Noticias> gerarInteresses(Usuario usuario, String data){
+        List<Noticias> noticias = new ArrayList<>();
+        List<Etiqueta> etiquetas = usuarioService.listarEtiquetas(usuario);   
         for(Etiqueta e : etiquetas){
-            noticias.add(noticiasService.obterNoticias(e.getNome(), date));
-        }
-        return noticias;
-    }
-
-    public List<NoticiasResponse> gerarRecomendacao(Usuario usuario, LocalDate data){
-        List<NoticiasResponse> noticias = new ArrayList<>();
-        List<Etiqueta> etiquetas = usuarioService.listarRecomendacoes(usuario);
-        String date = data.toString();   
-        for(Etiqueta e : etiquetas){
-            noticias.add(noticiasService.obterNoticias(e.getNome(), date));
-        }
-        return noticias;
-    }
-
-    public List<NoticiasResponse> gerarTrends(Usuario usuario, LocalDate data){
-        List<NoticiasResponse> noticias = new ArrayList<>();
-        List<Etiqueta> etiquetas = usuarioService.listarTrends(usuario);
-        String date = data.toString();   
-        for(Etiqueta e : etiquetas){
-            noticias.add(noticiasService.obterNoticias(e.getNome(), date));
+            noticias.addAll(noticiasService.listarNoticias(e.getNome(), data));
         }
         return noticias;
     }
