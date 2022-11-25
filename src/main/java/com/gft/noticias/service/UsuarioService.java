@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gft.noticias.dto.ConsultaUsuarioDTO;
+import com.gft.noticias.dto.HistoricoDTO;
+import com.gft.noticias.dto.SenhaForm;
 import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 import com.gft.noticias.exception.DuplicatedUniquePropertyException;
@@ -28,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioService {
     private final UsuarioRepository repository;
     private final EtiquetaService etiquetaService;
+    private final AcessosService acessosService;
     private final PasswordEncoder encoder;
 
     @Transactional
@@ -97,26 +100,24 @@ public class UsuarioService {
     public List<Etiqueta> listarEtiquetas(Usuario usuario) {
         return repository.findFavorites(usuario);
     }
-
-    public List<Etiqueta> listarRecomendacoes(Usuario usuario) {
-        return repository.findRecommendations(usuario);
-    }
-
-    public List<Etiqueta> listarTrends(Usuario usuario) {
-        return repository.findTrends(usuario);
-    }
-
+/* 
     public List<MaisAcessadasView> maioresAcessos(Usuario usuario){
-       // List<MaisAcessadasView> etiquetasHistorico = new ArrayList<>();
-        /*List<Etiqueta> etiquetas = repository.findEtiquetas
-        for (Etiqueta e: etiquetas){
-            etiquetasHistorico.add(repository.findMostAccessed(usuario));
-        }*/
-        return repository.findMostAccessed(usuario);
+        return acessosService.;
+    }
+*/
+    public List<HistoricoDTO> listarParametrosAcessados(Long id) {
+        Usuario encontrado = repository.findById(id).get();
+        return acessosService.historicoAcessos(encontrado);
     }
 
-    public ParametrosView listarParametrosAcessados(Long id) {
-        return repository.fetchParameters(id);
+    public Usuario mudarSenha(Long id, SenhaForm form) {
+        Optional<Usuario> encontrado = repository.findById(id);
+        if(encontrado.isEmpty()){
+            throw new EntityNotFoundException("Usuario não encontrado com o id: " + id);
+        }
+        Usuario editado = encontrado.get();
+        editado.setSenha(form.getSenha());
+        return repository.save(editado);
     }
     
 
