@@ -6,14 +6,6 @@
 
 API Rest de notícias desenvolvida em Spring e Neo4j, usando o serviço em nuvem AuraDB.
 
-## AuraDB 
-
-Endereço: https://34a7c0a3.databases.neo4j.io
-
-Username: neo4j
-
-Senha: fDX9rhZc6-iIh872wKyBL9-Nc2nUWCzKC3iZ5bkhS44
-
 
 ### Introdução ao Spring Data Neo4j 
 
