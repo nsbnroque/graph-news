@@ -1,92 +1,89 @@
-# Desafio Api
+# Desafio Api - Notícias
 
 
 
-## Getting started
+## Resumo
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+API Rest de notícias desenvolvida em Spring e Neo4j, usando o serviço em nuvem AuraDB.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## AuraDB 
 
-## Add your files
+Endereço: https://34a7c0a3.databases.neo4j.io
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Username: neo4j
 
-```
-cd existing_repo
-git remote add origin https://git.gft.com/narq/desafio-api.git
-git branch -M main
-git push -uf origin main
-```
+Senha: fDX9rhZc6-iIh872wKyBL9-Nc2nUWCzKC3iZ5bkhS44
 
-## Integrate with your tools
 
-- [ ] [Set up project integrations](https://git.gft.com/narq/desafio-api/-/settings/integrations)
+### Introdução ao Spring Data Neo4j 
 
-## Collaborate with your team
+Um banco de dados em grafos é especializado em armazenar e recuperar redes de informação. É principalmente eficaz em armazenar dados como nós e relacionamentos entre outros nós ou entre um mesmo nó. Propriedades podem ser adicionadas tanto aos nós quanto aos relacionamentos, permitindo uma melhor performance de recuperação e consulta nessas estruturas. Os nós podem ser etiquetados com uma ou mais etiquetas, relacionamentos sempre terão uma direção e um nome.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Spring Data Neo4j ou SDN é a nova geração de módulo de Spring Data criado pela Neo4j, Inc. desenvolvido em colaboração com o time de Spring Data da VMWare, empresa de software especializada em virtualização e computação em nuvem. O SDN depende completamente do Neo4j Data Driver, às vezes chamado de Bolt, que é usado como um protocolo similar ao JDBC com os bancos de dados relacionais.
 
-## Test and Deploy
+SDN é uma biblioteca de Mapeamento-Grafo-Objeto (OGM). Uma OGM mapeia os nós e seus relacionamentos aos objetos e referências ao modelo do domínio. Intâncias de objetos são mapeadas como nós enquanto as referências aos objetos serão mapeadas como relacionamentos. Ao mesmo tempo, provê flexibilidade ao desenvolvedor para desenvolver suas próprias querys customizadas, quando aquelas proporcionadas pelo SDN não forem suficientes.
 
-Use the built-in continuous integration in GitLab.
+#### Documentação: https://docs.spring.io/spring-data/neo4j/docs/current/reference/html/
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
 
-***
+## Versões
 
-# Editing this README
+Java 17
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Spring-boot-starter-neo4j 3.0.0
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+spring-boot-starter-web 3.0.0
 
-## Name
-Choose a self-explaining name for your project.
+spring-boot-starter-webflux 3.0.0
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+springdoc-openapi-ui 1.6.4
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+spring-boot-starter-mail 3.0.0
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+spring-boot-starter-security 3.0.0
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+## Spring Security 
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Para que o Spring Security conseguisse funcionar com o Neo4j foi necessário implementar e reescrever o Authentication Provider, no projeto representado pela classe Neo4jAuthenticationProvider.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+A implementação realizada no projeto é uma versão atualizada da implementação sugerida por este repositório: https://github.com/ikwattro/spring-security-neo4j
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Atualizada para a nova configuração do Spring Security com o apoio deste artigo: https://www.baeldung.com/spring-security-authentication-provider
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Todos os usuarios e admins possuem a mesma senha
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## Endpoints
 
-## License
-For open source projects, say how it is licensed.
+** /admin (só podem ser acessados por ROLE_ADMIN) **
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+** /usuarios (só podem ser acessados por ROLE_USER e mesmo id do usuario autenticado) **
+
+## Detalhes
+O email usado para enviar os emails gerados pela aplicação foi bloqueado pelo Outlook, não sei se ele terá sido liberado até a data que o presente projeto foi corrigido. Não aconselho o uso de qualquer email pessoal para tal. Escrevi um endpoint que envia um só email para um usuário.
+
+O parâmetro data é opcional na aplicação, caso uma data não seja passada a data do dia atual será enviada para a aplicação.
+
+## Status do projeto
+
+Funcionalidades do projeto: 
+
+Cadastro de administrador e usuario são realizados no mesmo endpoint, sendo obrigatório passar o role da pessoa: ROLE_ADMIN ou ROLE_USER . Usuário e Admin são dois tipos de nós (entidades) diferentes.
+
+Cadastro de etiqueta para usuário, é possível colocar nomes com espaço e acentos, isso não irá causar problemas na busca por notícias. (A alteração é relizada antes da busca pela notícia.)
+
+Histórico de parâmetros acessados 
+
+Histórico de etiquetas mais acessadas 
+
+Acesso às notícias com as etiquetas cadastradas 
+
+Popular banco 
+
+Testes unitários 
+
+OpenAPI 
+ 
+Endpoint para envio de e-mail com notícias da data corrente para usuários de acordo com suas etiquetas (somente adm)
+
