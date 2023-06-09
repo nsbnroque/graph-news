@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,12 +24,12 @@ public class EmailController {
     private final EmailService emailService;
     private final UsuarioService usuarioService;
     
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<List<Noticias>> enviarEmail(@PathVariable Long id) throws UnsupportedEncodingException{    
         return ResponseEntity.ok(emailService.gerarEmail(id));
     }
 
-    @RequestMapping("/enviar")
+    @GetMapping("/enviar")
     public ResponseEntity<String> enviarEmailParaTodos() throws UnsupportedEncodingException{
         List<Usuario> usuarios = usuarioService.listar();
         for (Usuario u : usuarios){

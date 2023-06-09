@@ -16,25 +16,28 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Neo4jAuthenticationProvider implements AuthenticationProvider {
     private final Driver driver;
+    private final PasswordEncoder passwordEncoder;
 
-    public Neo4jAuthenticationProvider(Driver driver) {
+    public Neo4jAuthenticationProvider(Driver driver, PasswordEncoder passwordEncoder) {
         this.driver = driver;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        System.out.println(authentication.toString());
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
+
+        String encodedPassword = passwordEncoder.encode(password);
         try (Session session = driver.session()) {
             List<Record> results = session.run("MATCH (n) WHERE n.email = $name RETURN n",
-            Map.of("name", name, "password", password)).list();
-            System.out.println("RESULTADOS" + results.toString());
+            Map.of("name", name, "password", encodedPassword)).list();
 
             if (results.isEmpty()) {
                 return null;
@@ -42,15 +45,9 @@ public class Neo4jAuthenticationProvider implements AuthenticationProvider {
 
             Node user = results.get(0).get("n").asNode();
             String role = user.get("role").asString();
-
-            System.out.println(role);
-            // Possible to add more information from user
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add( new SimpleGrantedAuthority(role));
             
-            //
-            //authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-            //System.out.println(authorities.toString());
             final UserDetails principal = new User(name, password, authorities);
             return new UsernamePasswordAuthenticationToken(principal, password, authorities);
         }

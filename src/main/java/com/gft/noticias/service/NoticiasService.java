@@ -23,7 +23,7 @@ public class NoticiasService {
         String novaString = removerAcentos(q);
         String parametro = novaString.replaceAll("[\\s|\u00A0]+", "");
         NoticiasResponse retornadas = obterNoticias(parametro, date);
-        List<Noticias> filtradas = filtrarData(retornadas.getList());
+        List<Noticias> filtradas = filtrarData(retornadas.getList(),date);
         return filtradas;
     }
       
@@ -37,13 +37,13 @@ public class NoticiasService {
         return mono.block();       
     }
 
-    public List<Noticias> filtrarData(List<Noticias> noticias){
+    public List<Noticias> filtrarData(List<Noticias> noticias, String date){
         List<Noticias> filtradas = new ArrayList<>();
         for(Noticias n : noticias){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
-            LocalDate hoje =  LocalDate.now();              
-            String hojeFormatado = hoje.format(formatter);
-            if(n.getDate().equals(hojeFormatado)){
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
+           // LocalDate hoje =  LocalDate.now();              
+            //String hojeFormatado = hoje.format(formatter);
+            if(n.getDate().equals(date)){
                 filtradas.add(n);}              
         }
         return filtradas;

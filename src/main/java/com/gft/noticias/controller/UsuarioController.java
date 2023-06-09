@@ -3,9 +3,11 @@ package com.gft.noticias.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,7 @@ import com.gft.noticias.entity.Etiqueta;
 import com.gft.noticias.entity.Usuario;
 import com.gft.noticias.projections.UsuarioEtiquetasProjection;
 import com.gft.noticias.service.AuthenticatedUserService;
+import com.gft.noticias.service.EtiquetaService;
 import com.gft.noticias.service.NoticiasService;
 import com.gft.noticias.service.UsuarioService;
 
@@ -37,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioController {
 
     private final UsuarioService service;
+    private final EtiquetaService etiquetaService;
     private final NoticiasService noticiasService;
     private final AuthenticatedUserService authenticatedUserService;
 
@@ -53,6 +57,19 @@ public class UsuarioController {
     public ResponseEntity<UsuarioEtiquetasProjection> adicionarInteresses(@PathVariable Long id, @RequestBody List<Etiqueta> etiquetas){
         Usuario encontrado = service.encontrarUsuario(id);
         return ResponseEntity.ok(service.adicionarEtiquetas(encontrado, etiquetas));
+    }
+
+    @DeleteMapping("/{id}/etiquetas/{nome}")
+    @PreAuthorize("@authenticatedUserService.hasId(#id)")
+    public ResponseEntity<String> excluirEtiqueta(@PathVariable("id") Long id,@PathVariable("nome") String nomeEtiqueta){
+        try{
+        Usuario encontrado = service.encontrarUsuario(id);
+        Optional<Etiqueta> encontrada = etiquetaService.encontrarEtiqueta(nomeEtiqueta);
+        service.excluirInteresse(encontrado, encontrada.get());
+        } catch (Exception e){
+            e.getMessage();
+        }
+        return null;
     }
 
     @PutMapping("/{id}/editar")
